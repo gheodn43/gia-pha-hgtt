@@ -1,0 +1,887 @@
+{
+  "version": 2,
+  "meta": {
+    "name": "Dữ liệu mẫu - Gia phả tu tiên",
+    "description": "Dữ liệu khởi tạo mặc định của ứng dụng. Toàn bộ quan hệ được biểu diễn bằng ID, không có circular reference."
+  },
+  "realms": [
+    {
+      "id": "realm_luyenkhi",
+      "name": "Khai tức",
+      "parentId": null,
+      "order": 0
+    },
+    {
+      "id": "realm_trucco",
+      "name": "Trúc Cơ",
+      "parentId": null,
+      "order": 2
+    },
+    {
+      "id": "realm_kimdan",
+      "name": "Tử phủ",
+      "parentId": null,
+      "order": 3
+    },
+    {
+      "id": "realm_mswxcr3whrbbp84",
+      "name": "Luyện Khí",
+      "parentId": null,
+      "order": 1
+    },
+    {
+      "id": "realm_mswxf73li9yhk2f",
+      "name": "Kim Đan",
+      "parentId": null,
+      "order": 5
+    },
+    {
+      "id": "realm_mswxfkuqjlfsak3",
+      "name": "Đạo thai/Nguyên Anh",
+      "parentId": null,
+      "order": 6
+    },
+    {
+      "id": "realm_mswxgg0dkjbs9lh",
+      "name": "Tiên quân /Đại la /Kim tiên",
+      "parentId": null,
+      "order": 7
+    }
+  ],
+  "families": [
+    {
+      "id": "family_msww5sqwad8p7sn",
+      "name": "Huyền giám Tiên tộc",
+      "note": ""
+    }
+  ],
+  "characters": [
+    {
+      "id": "char_msww5sqwcj91tkj",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 1,
+      "name": "LÝ MỘNG ĐIỀN",
+      "gender": "unknown",
+      "title": "",
+      "realmId": null,
+      "status": "deceased",
+      "note": ""
+    },
+    {
+      "id": "char_msww6y5eda7ax2x",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 2,
+      "name": "LÝ HẠN BÌNH",
+      "gender": "male",
+      "title": "3",
+      "realmId": "realm_luyenkhi",
+      "status": "deceased",
+      "note": "Chết ở đầu truyện, bị mấy thằng luyện khí dùng vu thuật giết chết. \nĐáng tiếc a"
+    },
+    {
+      "id": "char_msww78xtfds8ldq",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 2,
+      "name": "LÝ THÔNG NHAI",
+      "gender": "male",
+      "title": "2",
+      "realmId": "realm_trucco",
+      "status": "deceased",
+      "note": "Con thứ 2\nDám đánh, làm liều, thông minh.\nChủ trì gia tộc tới đời thứ 5. 1 kiếm trảm Ma La Sa dấn đến thân mang nội thương. thương thế chưa dứt lại ra một kiếm chấn nhiếp úc gia, khí tuyệt bỏ mình mà ra đi ở bộ dáng 16t"
+    },
+    {
+      "id": "char_mswwacsfhagjzrq",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 1,
+      "name": "Mẹ",
+      "gender": "female",
+      "title": "",
+      "realmId": null,
+      "status": "deceased",
+      "note": ""
+    },
+    {
+      "id": "char_mswwde6l39fdlnj",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 2,
+      "name": "LÝ TRƯỜNG HỒ",
+      "gender": "male",
+      "title": "1",
+      "realmId": null,
+      "status": "deceased",
+      "note": "Con cả \nLà Người khoan dung"
+    },
+    {
+      "id": "char_mswx6j25dmsv774",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 2,
+      "name": "LÝ XÍCH KÍNH",
+      "gender": "male",
+      "title": "4",
+      "realmId": "realm_trucco",
+      "status": "deceased",
+      "note": "Thông minh lanh lợi.\nNhận Sư phụ Tư Nguyên Bạch (tu Sĩ Trúc Cơ)"
+    },
+    {
+      "id": "char_mswxijkhl39s2u2",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 2,
+      "name": "NHẬM BÌNH AN",
+      "gender": "female",
+      "title": "",
+      "realmId": null,
+      "status": "deceased",
+      "note": ""
+    },
+    {
+      "id": "char_mswxn9zlnbf6d2u",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 2,
+      "name": "ĐIỀN VÂN",
+      "gender": "female",
+      "title": "",
+      "realmId": null,
+      "status": "deceased",
+      "note": ""
+    },
+    {
+      "id": "char_mswz3j9jrfzr49z",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 3,
+      "name": "LÝ HUYỀN TUYÊN",
+      "gender": "male",
+      "title": "1",
+      "realmId": "realm_mswxcr3whrbbp84",
+      "status": "alive",
+      "note": ""
+    },
+    {
+      "id": "char_msy00d8y1jkg3na",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 3,
+      "name": "LÝ HUYỀN PHONG",
+      "gender": "male",
+      "title": "1",
+      "realmId": "realm_trucco",
+      "status": "alive",
+      "note": ""
+    },
+    {
+      "id": "char_msy00krg39gkdx2",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 3,
+      "name": "LÝ CẢNH ĐIỂM",
+      "gender": "female",
+      "title": "2",
+      "realmId": null,
+      "status": "deceased",
+      "note": ""
+    },
+    {
+      "id": "char_msy9m6591cj2z3t",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 2,
+      "name": "LIỄU NHƯ HUYẾN",
+      "gender": "female",
+      "title": "",
+      "realmId": null,
+      "status": "deceased",
+      "note": ""
+    },
+    {
+      "id": "char_msyg80gq1vg2113",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 3,
+      "name": "LÝ HUYỀN LĨNH",
+      "gender": "male",
+      "title": "",
+      "realmId": "realm_mswxcr3whrbbp84",
+      "status": "deceased",
+      "note": ""
+    },
+    {
+      "id": "char_mszjkl811ps5i9p",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 3,
+      "name": "MỘC GIA LỘC",
+      "gender": "female",
+      "title": "",
+      "realmId": null,
+      "status": "alive",
+      "note": ""
+    },
+    {
+      "id": "char_mszjlkc93tci7u7",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 4,
+      "name": "LÝ UYÊN TU",
+      "gender": "female",
+      "title": "1",
+      "realmId": "realm_luyenkhi",
+      "status": "deceased",
+      "note": "Bị khách hanh nhà họ Úc chơi điếm dùng chú thuật chơi chết\nTài năng nhưng mà đáng tiếc"
+    },
+    {
+      "id": "char_mszpgwqs7on8sqj",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 3,
+      "name": "TRẦN ĐÔNG HÀ",
+      "gender": "male",
+      "title": "1",
+      "realmId": "realm_mswxcr3whrbbp84",
+      "status": "alive",
+      "note": ""
+    },
+    {
+      "id": "char_mt2dk98u12yoijv",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 4,
+      "name": "LÝ UYÊN GIAO",
+      "gender": "male",
+      "title": "2",
+      "realmId": "realm_trucco",
+      "status": "deceased",
+      "note": ""
+    },
+    {
+      "id": "char_mt2drjuv3j7s23o",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 3,
+      "name": "LƯ UYỂN DUNG",
+      "gender": "female",
+      "title": "",
+      "realmId": null,
+      "status": "alive",
+      "note": ""
+    },
+    {
+      "id": "char_mt2nfkg3bl9ould",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 3,
+      "name": "GIANG NƯ NỮ",
+      "gender": "female",
+      "title": "",
+      "realmId": null,
+      "status": "deceased",
+      "note": ""
+    },
+    {
+      "id": "char_mt2nfzpfdnzoyei",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 4,
+      "name": "LÝ UYÊN NGƯ",
+      "gender": "male",
+      "title": "",
+      "realmId": "realm_mswxgg0dkjbs9lh",
+      "status": "alive",
+      "note": "bị GIANG BÁ THANH bắt làm phù chủng sống(biệt danh Giang Nhạn)\n"
+    },
+    {
+      "id": "char_mt2o6fpffe4ulub",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 4,
+      "name": "LÝ UYÊN VÂN",
+      "gender": "male",
+      "title": "2",
+      "realmId": "realm_luyenkhi",
+      "status": "deceased",
+      "note": "BỊ MA TU BẤT NGỜ TẬP KÍCH GIẾT CHÊT. VÌ QÚA PHẾ VẬT NÊN CHẾT KHÔNG CÒN XƯƠNG."
+    },
+    {
+      "id": "char_mt2o6mb7hh9xq60",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 4,
+      "name": "LÝ THANH HỒNG",
+      "gender": "female",
+      "title": "1",
+      "realmId": "realm_trucco",
+      "status": "alive",
+      "note": "13 tuổi sang nhà Phí Gia ở (ẩn giấu thân phận), Vì ở đó có thương pháp chính tông."
+    },
+    {
+      "id": "char_mt4gwusi1g6bay6",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 4,
+      "name": "LÝ UYÊN BÌNH",
+      "gender": "male",
+      "title": "",
+      "realmId": "realm_luyenkhi",
+      "status": "deceased",
+      "note": ""
+    },
+    {
+      "id": "char_mt6urpbl1i8sgzr",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 4,
+      "name": "LÝ THANH HIỂU",
+      "gender": "female",
+      "title": "",
+      "realmId": "realm_luyenkhi",
+      "status": "alive",
+      "note": ""
+    },
+    {
+      "id": "char_mt6usmc03xys6h5",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 4,
+      "name": "TIÊU QUY LOAN",
+      "gender": "female",
+      "title": "",
+      "realmId": "realm_mswxcr3whrbbp84",
+      "status": "deceased",
+      "note": ""
+    },
+    {
+      "id": "char_mt6ut5dw55xwgd3",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 5,
+      "name": "LÝ HY TRỊ",
+      "gender": "male",
+      "title": "1",
+      "realmId": "realm_trucco",
+      "status": "alive",
+      "note": "TU LUYỆN KHÍ TUYẾT. Nhận Viêm Thoan làm sư phụ.\nBỘ TỬ CHÂN NHÂN\nphí thanh y - cùng nhận sư phụ Viêm Thoan - Thiên tư cao"
+    },
+    {
+      "id": "char_mt72tor111ddhw5",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 4,
+      "name": "VỢ",
+      "gender": "female",
+      "title": "",
+      "realmId": null,
+      "status": "alive",
+      "note": ""
+    },
+    {
+      "id": "char_mt72txx43w87638",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 5,
+      "name": "LÝ HY MINH",
+      "gender": "male",
+      "title": "",
+      "realmId": "realm_trucco",
+      "status": "alive",
+      "note": "THIÊN TÀI LUYỆN ĐAN\nTIÊU NGUYÊN TƯ"
+    },
+    {
+      "id": "char_mt738j7a5d5t5nk",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 5,
+      "name": "LÝ HY CHÂN",
+      "gender": "male",
+      "title": "",
+      "realmId": "realm_trucco",
+      "status": "alive",
+      "note": ""
+    },
+    {
+      "id": "char_mt8boq7r118kaya",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 5,
+      "name": "LÝ HY TUẤN",
+      "gender": "male",
+      "title": "",
+      "realmId": "realm_trucco",
+      "status": "alive",
+      "note": "ĐẸP TRAI, DUNG MAO THIÊN TU."
+    },
+    {
+      "id": "char_mt8c737p1wdj5ni",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 4,
+      "name": "TIÊU HIẾN",
+      "gender": "male",
+      "title": "",
+      "realmId": "realm_luyenkhi",
+      "status": "deceased",
+      "note": ""
+    },
+    {
+      "id": "char_mtb8gl8j1585ay5",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 5,
+      "name": "LÝ NGUYỆT TƯƠNG",
+      "gender": "female",
+      "title": "",
+      "realmId": "realm_mswxcr3whrbbp84",
+      "status": "alive",
+      "note": ""
+    },
+    {
+      "id": "char_mtb8rjj33mamblb",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 5,
+      "name": "DƯƠNG TIÊU NHI",
+      "gender": "female",
+      "title": "",
+      "realmId": "realm_mswxcr3whrbbp84",
+      "status": "alive",
+      "note": ""
+    },
+    {
+      "id": "char_mtcg1v281sz3l6v",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 6,
+      "name": "LÝ THỪA HÂN",
+      "gender": "male",
+      "title": "",
+      "realmId": null,
+      "status": "alive",
+      "note": ""
+    },
+    {
+      "id": "char_mtcgeom71qssks3",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 3,
+      "name": "NINH HOÀ NIÊN",
+      "gender": "female",
+      "title": "",
+      "realmId": "realm_mswxcr3whrbbp84",
+      "status": "alive",
+      "note": ""
+    },
+    {
+      "id": "char_mtcgfbgg32xmc9t",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 5,
+      "name": "TIÊU MỘ VÂN",
+      "gender": "male",
+      "title": "",
+      "realmId": "realm_mswxcr3whrbbp84",
+      "status": "alive",
+      "note": ""
+    },
+    {
+      "id": "char_mtgjt5md1ys5uw5",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 6,
+      "name": "LÝ THỪA LIÊU",
+      "gender": "male",
+      "title": "",
+      "realmId": "realm_mswxcr3whrbbp84",
+      "status": "alive",
+      "note": ""
+    },
+    {
+      "id": "char_mtgjtlhz32k4iwv",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 7,
+      "name": "LÝ CHU NGUY",
+      "gender": "male",
+      "title": "",
+      "realmId": "realm_luyenkhi",
+      "status": "alive",
+      "note": "đạo hiệu: Minh Hoàng"
+    },
+    {
+      "id": "char_mth5gwgv1vo2gej",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 7,
+      "name": "HỨA BỘI NGỌC",
+      "gender": "female",
+      "title": "",
+      "realmId": null,
+      "status": "alive",
+      "note": ""
+    },
+    {
+      "id": "char_mth5n4nt3cymof5",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 4,
+      "name": "LÝ UYÊN THÂM",
+      "gender": "male",
+      "title": "",
+      "realmId": null,
+      "status": "alive",
+      "note": ""
+    },
+    {
+      "id": "char_mti0zdxj3lgas9y",
+      "familyId": "family_msww5sqwad8p7sn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "generation": 6,
+      "name": "LÝ Ô SAO 🐍",
+      "gender": "unknown",
+      "title": "",
+      "realmId": "realm_trucco",
+      "status": "alive",
+      "note": ""
+    }
+  ],
+  "relationships": [
+    {
+      "id": "rel_msww6y5eeuc4ny5",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "parent",
+      "from": "char_msww5sqwcj91tkj",
+      "to": "char_msww6y5eda7ax2x",
+      "role": "son"
+    },
+    {
+      "id": "rel_msww78xtgqx8zig",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "parent",
+      "from": "char_msww5sqwcj91tkj",
+      "to": "char_msww78xtfds8ldq",
+      "role": "son"
+    },
+    {
+      "id": "rel_mswwacsfi8kidb2",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "spouse",
+      "from": "char_msww5sqwcj91tkj",
+      "to": "char_mswwacsfhagjzrq",
+      "role": "wife"
+    },
+    {
+      "id": "rel_mswwde6l4jmjsui",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "parent",
+      "from": "char_msww5sqwcj91tkj",
+      "to": "char_mswwde6l39fdlnj",
+      "role": "son"
+    },
+    {
+      "id": "rel_mswx6j25e2g67wn",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "parent",
+      "from": "char_msww5sqwcj91tkj",
+      "to": "char_mswx6j25dmsv774",
+      "role": "son"
+    },
+    {
+      "id": "rel_mswxijkhmaiznub",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "spouse",
+      "from": "char_mswwde6l39fdlnj",
+      "to": "char_mswxijkhl39s2u2",
+      "role": "wife"
+    },
+    {
+      "id": "rel_mswxn9zlo2v6tzm",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "spouse",
+      "from": "char_msww6y5eda7ax2x",
+      "to": "char_mswxn9zlnbf6d2u",
+      "role": "wife"
+    },
+    {
+      "id": "rel_mswz3j9js3skj7b",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "parent",
+      "from": "char_mswxijkhl39s2u2",
+      "to": "char_mswz3j9jrfzr49z",
+      "role": "son"
+    },
+    {
+      "id": "rel_msy00d8y2huohot",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "parent",
+      "from": "char_mswxn9zlnbf6d2u",
+      "to": "char_msy00d8y1jkg3na",
+      "role": "son"
+    },
+    {
+      "id": "rel_msy00krg4wl8rvw",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "parent",
+      "from": "char_mswxn9zlnbf6d2u",
+      "to": "char_msy00krg39gkdx2",
+      "role": "daughter"
+    },
+    {
+      "id": "rel_msy9m6592zke1fp",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "spouse",
+      "from": "char_msww78xtfds8ldq",
+      "to": "char_msy9m6591cj2z3t",
+      "role": "wife"
+    },
+    {
+      "id": "rel_msyg80gq27sivoa",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "parent",
+      "from": "char_msy9m6591cj2z3t",
+      "to": "char_msyg80gq1vg2113",
+      "role": "son"
+    },
+    {
+      "id": "rel_mszjkl812urpt1h",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "spouse",
+      "from": "char_mswz3j9jrfzr49z",
+      "to": "char_mszjkl811ps5i9p",
+      "role": "wife"
+    },
+    {
+      "id": "rel_mszjlkc94abgwo8",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "parent",
+      "from": "char_mszjkl811ps5i9p",
+      "to": "char_mszjlkc93tci7u7",
+      "role": "son"
+    },
+    {
+      "id": "rel_mszpgwqs8nlh3ox",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "spouse",
+      "from": "char_msy00krg39gkdx2",
+      "to": "char_mszpgwqs7on8sqj",
+      "role": "partner"
+    },
+    {
+      "id": "rel_mt2dk98v2kyoovj",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "parent",
+      "from": "char_mszjkl811ps5i9p",
+      "to": "char_mt2dk98u12yoijv",
+      "role": "son"
+    },
+    {
+      "id": "rel_mt2drjuv4f05ich",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "spouse",
+      "from": "char_msyg80gq1vg2113",
+      "to": "char_mt2drjuv3j7s23o",
+      "role": "wife"
+    },
+    {
+      "id": "rel_mt2nfkg3cfha0lg",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "spouse",
+      "from": "char_msy00d8y1jkg3na",
+      "to": "char_mt2nfkg3bl9ould",
+      "role": "wife"
+    },
+    {
+      "id": "rel_mt2nfzpfeehbv1f",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "parent",
+      "from": "char_mt2nfkg3bl9ould",
+      "to": "char_mt2nfzpfdnzoyei",
+      "role": "son"
+    },
+    {
+      "id": "rel_mt2o6fpfg1h0bbh",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "parent",
+      "from": "char_mt2drjuv3j7s23o",
+      "to": "char_mt2o6fpffe4ulub",
+      "role": "son"
+    },
+    {
+      "id": "rel_mt2o6mb7im06n9i",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "parent",
+      "from": "char_mt2drjuv3j7s23o",
+      "to": "char_mt2o6mb7hh9xq60",
+      "role": "adopted"
+    },
+    {
+      "id": "rel_mt4gwusi2erxsxk",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "parent",
+      "from": "char_mszjkl811ps5i9p",
+      "to": "char_mt4gwusi1g6bay6",
+      "role": "son"
+    },
+    {
+      "id": "rel_mt6urpbl2sl058s",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "parent",
+      "from": "char_msy00krg39gkdx2",
+      "to": "char_mt6urpbl1i8sgzr",
+      "role": "daughter"
+    },
+    {
+      "id": "rel_mt6usmc04lzw016",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "spouse",
+      "from": "char_mt2dk98u12yoijv",
+      "to": "char_mt6usmc03xys6h5",
+      "role": "wife"
+    },
+    {
+      "id": "rel_mt6ut5dw6yhgo6t",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "parent",
+      "from": "char_mt6usmc03xys6h5",
+      "to": "char_mt6ut5dw55xwgd3",
+      "role": "son"
+    },
+    {
+      "id": "rel_mt72tor12ciypya",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "spouse",
+      "from": "char_mt4gwusi1g6bay6",
+      "to": "char_mt72tor111ddhw5",
+      "role": "wife"
+    },
+    {
+      "id": "rel_mt72txx448b5erq",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "parent",
+      "from": "char_mt72tor111ddhw5",
+      "to": "char_mt72txx43w87638",
+      "role": "son"
+    },
+    {
+      "id": "rel_mt738j7a6o1yrgo",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "parent",
+      "from": "char_mt2o6fpffe4ulub",
+      "to": "char_mt738j7a5d5t5nk",
+      "role": "son"
+    },
+    {
+      "id": "rel_mt8boq7r2v237fo",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "parent",
+      "from": "char_mt2o6fpffe4ulub",
+      "to": "char_mt8boq7r118kaya",
+      "role": "son"
+    },
+    {
+      "id": "rel_mt8c737p26bgx27",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "spouse",
+      "from": "char_mt6urpbl1i8sgzr",
+      "to": "char_mt8c737p1wdj5ni",
+      "role": "husband"
+    },
+    {
+      "id": "rel_mtb8gl8j2gv1wzb",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "parent",
+      "from": "char_mt6usmc03xys6h5",
+      "to": "char_mtb8gl8j1585ay5",
+      "role": "daughter"
+    },
+    {
+      "id": "rel_mtb8rjj34g4eipl",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "spouse",
+      "from": "char_mt6ut5dw55xwgd3",
+      "to": "char_mtb8rjj33mamblb",
+      "role": "wife"
+    },
+    {
+      "id": "rel_mtcg1v2829es4ld",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "parent",
+      "from": "char_mtb8rjj33mamblb",
+      "to": "char_mtcg1v281sz3l6v",
+      "role": "son"
+    },
+    {
+      "id": "rel_mtcgeom72himo1z",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "spouse",
+      "from": "char_msy00d8y1jkg3na",
+      "to": "char_mtcgeom71qssks3",
+      "role": "wife"
+    },
+    {
+      "id": "rel_mtcgfbgg4wfqg9j",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "parent",
+      "from": "char_mt6urpbl1i8sgzr",
+      "to": "char_mtcgfbgg32xmc9t",
+      "role": "son"
+    },
+    {
+      "id": "rel_mtgjt5md2o9p6vd",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "parent",
+      "from": "char_mt738j7a5d5t5nk",
+      "to": "char_mtgjt5md1ys5uw5",
+      "role": "son"
+    },
+    {
+      "id": "rel_mtgjtlhz4twmp1d",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "parent",
+      "from": "char_mtgjt5md1ys5uw5",
+      "to": "char_mtgjtlhz32k4iwv",
+      "role": "son"
+    },
+    {
+      "id": "rel_mth5gwgv22h3qfh",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "spouse",
+      "from": "char_mtgjtlhz32k4iwv",
+      "to": "char_mth5gwgv1vo2gej",
+      "role": "wife"
+    },
+    {
+      "id": "rel_mth5n4nt4bp0eb2",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "parent",
+      "from": "char_mtcgeom71qssks3",
+      "to": "char_mth5n4nt3cymof5",
+      "role": "son"
+    },
+    {
+      "id": "rel_mti0zdxj4rwoasm",
+      "treeId": "tree_msww5sqwb2wior0",
+      "type": "spouse",
+      "from": "char_mtcg1v281sz3l6v",
+      "to": "char_mti0zdxj3lgas9y",
+      "role": "partner"
+    }
+  ],
+  "ui": {
+    "activeFamilyId": "family_msww5sqwad8p7sn",
+    "activeTreeId": "tree_msww5sqwb2wior0"
+  },
+  "trees": [
+    {
+      "id": "tree_msww5sqwb2wior0",
+      "familyId": "family_msww5sqwad8p7sn",
+      "name": "Huyết thống chính",
+      "rootCharacterId": "char_msww5sqwcj91tkj",
+      "note": ""
+    }
+  ]
+}
