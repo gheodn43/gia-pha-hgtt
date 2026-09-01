@@ -11,6 +11,8 @@
 class TreeView {
   static MIN_SCALE = 0.15;
   static MAX_SCALE = 2.5;
+  /** Tỉ lệ nhỏ nhất mà chữ trên thẻ nhân vật còn đọc được trên điện thoại */
+  static READABLE_SCALE = 0.42;
 
   constructor(store, options) {
     this.store = store;
@@ -20,7 +22,7 @@ class TreeView {
     this.linkLayer = options.linkLayer;
     this.nodeLayer = options.nodeLayer;
     this.emptyState = options.emptyState;
-    this.zoomLabel = options.zoomLabel;
+    this.zoomLabels = (options.zoomLabels || [options.zoomLabel]).filter(Boolean);
     this.onNodeClick = options.onNodeClick || (() => {});
     this.onLaneClick = options.onLaneClick || (() => {});
 
@@ -146,7 +148,7 @@ class TreeView {
       this.nodeLayer.append(this.#renderNode(character, node, NODE_W, NODE_H));
     }
 
-    if (isNewFamily) this.fit();
+    if (isNewFamily) this.fit({ readableFloor: true });
     else this.#applyTransform();
   }
 
@@ -211,6 +213,30 @@ class TreeView {
     let startY = 0;
     let originX = 0;
     let originY = 0;
+    // Các ngón/con trỏ đang đặt trên canvas - cần cho cử chỉ pinch 2 ngón.
+    const points = new Map();
+    let pinch = null;
+    let lastTapAt = 0;
+    let lastTapX = 0;
+    let lastTapY = 0;
+
+    const midpoint = () => {
+      const [a, b] = [...points.values()];
+      return {
+        x: (a.x + b.x) / 2,
+        y: (a.y + b.y) / 2,
+        dist: Math.hypot(a.x - b.x, a.y - b.y),
+      };
+    };
+
+    const startPinch = () => {
+      dragging = false;
+      this.pointerMoved = true;
+      this.canvas.classList.remove('is-panning');
+      const m = midpoint();
+      const rect = this.canvas.getBoundingClientRect();
+      pinch = { dist: m.dist || 1, cx: m.x - rect.left, cy: m.y - rect.top };
+    };
 
     this.canvas.addEventListener('pointerdown', (event) => {
       if (event.button !== 0 && event.pointerType === 'mouse') return;
@@ -219,6 +245,12 @@ class TreeView {
       // khiến sự kiện "click" bị chuyển hướng về canvas thay vì phần tử gốc,
       // làm mất click trên node/nút.
       if (event.target.closest('.node, button, select, input, textarea, a, .popover')) return;
+      points.set(event.pointerId, { x: event.clientX, y: event.clientY });
+      if (points.size === 2) {
+        startPinch();
+        return;
+      }
+      if (points.size > 2) return;
       dragging = true;
       this.pointerMoved = false;
       startX = event.clientX;
@@ -230,6 +262,30 @@ class TreeView {
     });
 
     this.canvas.addEventListener('pointermove', (event) => {
+      if (points.has(event.pointerId)) {
+        points.get(event.pointerId).x = event.clientX;
+        points.get(event.pointerId).y = event.clientY;
+      }
+
+      // Pinch 2 ngón: vừa zoom quanh trung điểm, vừa pan theo trung điểm đó.
+      if (pinch && points.size >= 2) {
+        const m = midpoint();
+        const rect = this.canvas.getBoundingClientRect();
+        const cx = m.x - rect.left;
+        const cy = m.y - rect.top;
+        this.transform.x += cx - pinch.cx;
+        this.transform.y += cy - pinch.cy;
+        pinch.cx = cx;
+        pinch.cy = cy;
+        if (m.dist > 0) {
+          this.zoomAt(m.dist / pinch.dist, cx, cy);
+          pinch.dist = m.dist;
+        } else {
+          this.#applyTransform();
+        }
+        return;
+      }
+
       if (!dragging) return;
       const dx = event.clientX - startX;
       const dy = event.clientY - startY;
@@ -240,7 +296,28 @@ class TreeView {
     });
 
     const endDrag = (event) => {
-      if (!dragging) return;
+      const wasPinching = pinch !== null;
+      points.delete(event.pointerId);
+      if (points.size < 2) pinch = null;
+
+      // Nhả 1 trong 2 ngón của cử chỉ pinch mà ngón kia còn trên màn hình:
+      // chuyển tiếp mượt sang kéo bằng ngón còn lại thay vì "đơ" cho tới khi
+      // người dùng nhấc tay ra rồi đặt lại.
+      if (wasPinching && points.size === 1) {
+        const [remaining] = points.values();
+        dragging = true;
+        startX = remaining.x;
+        startY = remaining.y;
+        originX = this.transform.x;
+        originY = this.transform.y;
+        return;
+      }
+
+      if (!dragging) {
+        // Vừa nhả ngón cuối của cử chỉ pinch: chặn click "ảo" trên node.
+        if (points.size === 0) setTimeout(() => { this.pointerMoved = false; }, 0);
+        return;
+      }
       dragging = false;
       this.canvas.classList.remove('is-panning');
       try { this.canvas.releasePointerCapture(event.pointerId); } catch (err) { /* noop */ }
@@ -249,6 +326,23 @@ class TreeView {
     };
     this.canvas.addEventListener('pointerup', endDrag);
     this.canvas.addEventListener('pointercancel', endDrag);
+
+    // Chạm 2 lần nhanh vào nền canvas => phóng to quanh điểm chạm (thay cho
+    // double-click zoom mặc định của trình duyệt đã bị touch-action: none tắt).
+    this.canvas.addEventListener('pointerup', (event) => {
+      if (event.pointerType === 'mouse') return;
+      if (event.target.closest('.node, button, select, input, textarea, a, .popover')) return;
+      if (this.pointerMoved) return;
+      const now = Date.now();
+      const isDoubleTap = now - lastTapAt < 320
+        && Math.hypot(event.clientX - lastTapX, event.clientY - lastTapY) < 32;
+      lastTapAt = isDoubleTap ? 0 : now;
+      lastTapX = event.clientX;
+      lastTapY = event.clientY;
+      if (!isDoubleTap) return;
+      const rect = this.canvas.getBoundingClientRect();
+      this.zoomAt(1.6, event.clientX - rect.left, event.clientY - rect.top);
+    });
 
     this.canvas.addEventListener('wheel', (event) => {
       event.preventDefault();
@@ -289,19 +383,38 @@ class TreeView {
     this.#applyTransform();
   }
 
-  /** Thu toàn bộ cây vừa khung nhìn */
-  fit() {
+  /**
+   * Thu toàn bộ cây vừa khung nhìn.
+   *
+   * @param {object} [options]
+   * @param {boolean} [options.readableFloor] Trên màn hình hẹp, một cây lớn khi
+   *   fit trọn vẹn sẽ nhỏ tới mức không đọc nổi chữ. Bật cờ này (dùng cho lần
+   *   fit tự động khi đổi gia phả) để giữ tỉ lệ tối thiểu còn đọc được và neo
+   *   khung nhìn vào đỉnh cây; nút "Fit vừa màn hình" vẫn fit đúng nghĩa.
+   */
+  fit({ readableFloor = false } = {}) {
     if (!this.layout || !this.layout.nodes.length) return;
     const rect = this.canvas.getBoundingClientRect();
-    const scale = Utils.clamp(
+    if (!rect.width || !rect.height) return;
+    const exact = Utils.clamp(
       Math.min(rect.width / this.layout.width, rect.height / this.layout.height) * 0.94,
       TreeView.MIN_SCALE,
       1,
     );
+    const floor = readableFloor && TreeView.isCompactViewport() ? TreeView.READABLE_SCALE : 0;
+    const scale = Math.max(exact, floor);
+
     this.transform.scale = scale;
     this.transform.x = (rect.width - this.layout.width * scale) / 2;
-    this.transform.y = Math.max(16, (rect.height - this.layout.height * scale) / 2);
+    this.transform.y = scale > exact
+      ? 16
+      : Math.max(16, (rect.height - this.layout.height * scale) / 2);
     this.#applyTransform();
+  }
+
+  /** Màn hình hẹp / thiết bị cảm ứng - dùng để chọn hành vi khung nhìn */
+  static isCompactViewport() {
+    return window.matchMedia('(max-width: 880px), (pointer: coarse)').matches;
   }
 
   /** Đưa một nhân vật vào giữa khung nhìn và làm nổi bật */
@@ -326,6 +439,7 @@ class TreeView {
   #applyTransform() {
     const { x, y, scale } = this.transform;
     this.viewport.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
-    if (this.zoomLabel) this.zoomLabel.textContent = `${Math.round(scale * 100)}%`;
+    const percent = `${Math.round(scale * 100)}%`;
+    for (const label of this.zoomLabels) label.textContent = percent;
   }
 }
