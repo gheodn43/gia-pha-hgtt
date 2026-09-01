@@ -2,7 +2,9 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="color-scheme" content="dark" />
+<meta name="theme-color" content="#161d2e" />
 <title>Gia Phả Tông Môn — Quản lý huyết mạch</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><text y=%2224%22 font-size=%2224%22>🌳</text></svg>" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -13,6 +15,10 @@
 <body>
   <div class="app" id="app">
     <header class="topbar">
+      <button type="button" class="topbar__menu" id="btn-menu"
+              aria-label="Mở bảng điều khiển" aria-controls="sidebar" aria-expanded="false">
+        <span aria-hidden="true">☰</span>
+      </button>
       <div class="topbar__brand">
         <span class="topbar__logo" aria-hidden="true">🌳</span>
         <div>
@@ -21,14 +27,24 @@
         </div>
       </div>
       <div class="topbar__actions">
-        <button type="button" class="btn btn--ghost" id="btn-import">Import JSON</button>
-        <button type="button" class="btn btn--ghost" id="btn-export">Export JSON</button>
+        <button type="button" class="btn btn--ghost btn--dual" id="btn-import" title="Import JSON" aria-label="Import JSON">
+          <span class="btn__glyph" aria-hidden="true">⤓</span><span class="btn__label">Import JSON</span>
+        </button>
+        <button type="button" class="btn btn--ghost btn--dual" id="btn-export" title="Export JSON" aria-label="Export JSON">
+          <span class="btn__glyph" aria-hidden="true">⤒</span><span class="btn__label">Export JSON</span>
+        </button>
         <input type="file" id="file-input" accept="application/json" hidden />
       </div>
     </header>
 
     <div class="layout">
+      <div class="sidebar-scrim" id="sidebar-scrim" hidden></div>
       <aside class="sidebar" id="sidebar">
+        <div class="sidebar__drawer-head">
+          <span class="sidebar__drawer-title">Bảng điều khiển</span>
+          <button type="button" class="sidebar__drawer-close" id="btn-sidebar-close" aria-label="Đóng bảng điều khiển">×</button>
+        </div>
+
         <div class="sidebar__section">
           <div class="sidebar__head">
             <h2 class="sidebar__title">Gia phả</h2>
@@ -84,6 +100,12 @@
           </div>
           <div class="canvas__empty" id="empty-state" hidden>
             <p>Gia phả này chưa có nhân vật nào.</p>
+          </div>
+          <div class="canvas__controls" aria-label="Điều khiển khung nhìn">
+            <button type="button" class="fab" id="btn-fit-m" title="Fit vừa màn hình" aria-label="Fit vừa màn hình">⤢</button>
+            <button type="button" class="fab" id="btn-zoom-in-m" title="Phóng to" aria-label="Phóng to">+</button>
+            <span class="fab fab--label" id="zoom-label-m" aria-hidden="true">100%</span>
+            <button type="button" class="fab" id="btn-zoom-out-m" title="Thu nhỏ" aria-label="Thu nhỏ">−</button>
           </div>
         </div>
       </main>

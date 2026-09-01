@@ -44,6 +44,13 @@
   --shadow-1: 0 2px 10px rgba(0,0,0,0.35);
   --shadow-2: 0 12px 40px rgba(0,0,0,0.5);
   --font: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+  /* Kích thước tối thiểu của một vùng chạm trên cảm ứng */
+  --tap: 44px;
+  /* Lề an toàn cho máy có tai thỏ / thanh gạt dưới màn hình */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
 }
 
 * { box-sizing: border-box; }
@@ -55,6 +62,9 @@ html, body {
   background: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  /* Chặn kéo dội (rubber-band) của trang khi kéo cây trên di động */
+  overscroll-behavior: none;
 }
 
 button, input, select, textarea {
@@ -62,8 +72,15 @@ button, input, select, textarea {
   color: inherit;
 }
 
+/* Bỏ độ trễ ~300ms trình duyệt di động chờ xem có phải double-tap không */
+button, .btn { touch-action: manipulation; }
+/* Trong canvas thì ngược lại: mọi cử chỉ do app tự xử lý (kéo / pinch) */
+.canvas, .canvas * { touch-action: none; }
+
 .app {
   height: 100vh;
+  /* dvh: trừ đúng phần thanh địa chỉ đang hiện của trình duyệt di động */
+  height: 100dvh;
   display: flex;
   flex-direction: column;
 }
@@ -82,6 +99,22 @@ button, input, select, textarea {
   flex-shrink: 0;
   gap: 16px;
 }
+
+.topbar__menu {
+  display: none;
+  width: var(--tap);
+  height: var(--tap);
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  font-size: 18px;
+  cursor: pointer;
+}
+.topbar__menu:hover { color: var(--accent-strong); border-color: var(--accent); }
 
 .topbar__brand {
   display: flex;
@@ -135,6 +168,45 @@ button, input, select, textarea {
   overflow-y: auto;
   padding: 16px 14px;
   gap: 18px;
+}
+
+/* Đầu ngăn kéo: chỉ xuất hiện khi sidebar trượt ra trên màn hình hẹp */
+.sidebar__drawer-head {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: -4px -2px 0;
+}
+.sidebar__drawer-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--accent-strong);
+}
+.sidebar__drawer-close {
+  width: var(--tap);
+  height: var(--tap);
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--text-faint);
+  font-size: 26px;
+  line-height: 1;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+.sidebar__drawer-close:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+
+/* Nền mờ sau ngăn kéo */
+.sidebar-scrim {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  background: rgba(6,9,16,0.6);
+  backdrop-filter: blur(1px);
 }
 
 .sidebar__section { display: flex; flex-direction: column; gap: 8px; }
@@ -247,10 +319,14 @@ button, input, select, textarea {
   padding: 2px 6px;
   cursor: pointer;
   border-radius: var(--radius-sm);
-  opacity: 0;
 }
-.realm-row:hover .realm-row__more,
-.realm-row__more:focus-visible { opacity: 1; }
+/* Chỉ giấu-khi-chưa-rê trên thiết bị có chuột; cảm ứng không có :hover nên
+   nút phải luôn hiện, nếu không sẽ không cách nào bấm được. */
+@media (hover: hover) {
+  .realm-row__more { opacity: 0; }
+  .realm-row:hover .realm-row__more,
+  .realm-row__more:focus-visible { opacity: 1; }
+}
 .realm-row__more:hover { color: var(--text); background: rgba(255,255,255,0.08); }
 
 .realm-children { display: flex; flex-direction: column; gap: 2px; margin-bottom: 4px; }
@@ -316,6 +392,11 @@ button, input, select, textarea {
   flex: 1;
   overflow: hidden;
   cursor: grab;
+  /* Tự xử lý toàn bộ cử chỉ kéo/pinch, không nhường cho trình duyệt cuộn trang */
+  touch-action: none;
+  overscroll-behavior: contain;
+  -webkit-user-select: none;
+  user-select: none;
   background-image:
     radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0);
   background-size: 26px 26px;
@@ -344,6 +425,45 @@ button, input, select, textarea {
   font-size: 14px;
 }
 .canvas__empty[hidden] { display: none; }
+
+/*
+ * Nút nổi điều khiển khung nhìn - chỉ dùng trên màn hình hẹp, nơi toolbar
+ * zoom bị ẩn để nhường chỗ cho cây.
+ */
+.canvas__controls {
+  display: none;
+  position: absolute;
+  right: calc(12px + var(--safe-right));
+  bottom: calc(12px + var(--safe-bottom));
+  z-index: 20;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fab {
+  width: var(--tap);
+  height: var(--tap);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  color: var(--text);
+  font-size: 20px;
+  line-height: 1;
+  box-shadow: var(--shadow-2);
+  cursor: pointer;
+}
+.fab:active { background: var(--accent-soft); border-color: var(--accent); }
+.fab--label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-dim);
+  border-radius: var(--radius-sm);
+  height: 26px;
+  cursor: default;
+}
 
 /* Lanes ("Đời N") */
 
@@ -439,7 +559,10 @@ button, input, select, textarea {
   transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
   user-select: none;
 }
-.node:hover { transform: translateY(-2px); box-shadow: var(--shadow-2); }
+@media (hover: hover) {
+  .node:hover { transform: translateY(-2px); box-shadow: var(--shadow-2); }
+}
+.node:active { box-shadow: var(--shadow-2); }
 .node:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .node.is-highlight { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(201,163,90,0.28); }
 
@@ -616,6 +739,13 @@ button, input, select, textarea {
 }
 
 .btn--block { width: 100%; }
+
+/*
+ * Nút "2 dạng": desktop hiện nhãn chữ, mobile thu về đúng một biểu tượng
+ * (xem khối responsive ở cuối file).
+ */
+.btn--dual { display: inline-flex; align-items: center; gap: 6px; }
+.btn--dual .btn__glyph { display: none; }
 
 .btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
 
@@ -876,35 +1006,10 @@ button, input, select, textarea {
  * Responsive
  * ---------------------------------------------------------------------- */
 
-@media (max-width: 880px) {
-  .layout { flex-direction: column; }
+/* Toàn bộ quy tắc cho màn hình hẹp nằm ở khối "Mobile" cuối file. */
 
-  .sidebar {
-    width: 100%;
-    max-height: 40vh;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-    flex-direction: row;
-    flex-wrap: wrap;
-    overflow: auto;
-  }
-  .sidebar__section { flex: 1 1 220px; }
-
-  .topbar { flex-wrap: wrap; }
-  .toolbar { flex-direction: column; align-items: stretch; }
-  .toolbar__legend { justify-content: flex-start; }
-
-  .form-grid { grid-template-columns: 1fr; }
-  .modal { max-height: 94vh; }
-}
-
-@media (max-width: 520px) {
-  .topbar__actions { width: 100%; justify-content: flex-end; }
-  .rel-row { flex-direction: column; }
-  .rel-row__label { width: auto; }
-}
-
-body.has-modal { overflow: hidden; }
+body.has-modal,
+body.has-drawer { overflow: hidden; }
 
 /* ---------------------------------------------------------------------- *
  * Modal — skin "thư tịch cổ" (giấy sách cũ, mực nâu, đỏ sơn mài)
@@ -1286,4 +1391,190 @@ body.has-modal { overflow: hidden; }
 @media (max-width: 520px) {
   .modal--scroll .rel-row { grid-template-columns: 1fr; gap: 6px; }
   .modal--scroll .modal__footer { flex-wrap: wrap; }
+}
+
+/* ==========================================================================
+   Mobile / màn hình hẹp
+   --------------------------------------------------------------------------
+   Ba thay đổi chính so với desktop:
+     1. Sidebar biến thành ngăn kéo trượt từ trái (mở bằng nút ☰ trên topbar),
+        trả lại toàn bộ chiều cao màn hình cho cây.
+     2. Nhóm nút zoom rời toolbar, thành cụm nút nổi góc dưới - phải canvas;
+        toolbar chỉ còn dải chú giải cuộn ngang.
+     3. Modal chuyển sang dạng "bottom sheet": bám đáy màn hình, bo góc trên,
+        chừa lề an toàn cho thanh gạt của máy.
+   Mọi vùng chạm được nâng lên >= var(--tap); input dùng cỡ chữ 16px để iOS
+   không tự phóng to trang khi focus.
+   ========================================================================== */
+
+@media (max-width: 880px) {
+  /* ----- Topbar ----- */
+  .topbar {
+    flex-wrap: nowrap;
+    gap: 10px;
+    padding: 8px 12px;
+    padding-top: calc(8px + var(--safe-top));
+    padding-left: calc(12px + var(--safe-left));
+    padding-right: calc(12px + var(--safe-right));
+  }
+  .topbar__menu { display: inline-flex; }
+  .topbar__logo { font-size: 22px; }
+  .topbar__title { font-size: 15px; }
+  .topbar__subtitle { font-size: 11.5px; }
+  .topbar__actions { gap: 6px; }
+
+  .topbar__actions .btn--dual {
+    width: var(--tap);
+    height: var(--tap);
+    padding: 0;
+    justify-content: center;
+  }
+  .topbar__actions .btn--dual .btn__label { display: none; }
+  .topbar__actions .btn--dual .btn__glyph { display: block; font-size: 18px; }
+
+  /* ----- Sidebar dạng ngăn kéo ----- */
+  .sidebar {
+    position: fixed;
+    z-index: 90;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: min(86vw, 320px);
+    padding: 14px 14px calc(16px + var(--safe-bottom));
+    padding-top: calc(14px + var(--safe-top));
+    border-right: 1px solid var(--border);
+    box-shadow: var(--shadow-2);
+    overscroll-behavior: contain;
+    transform: translateX(-102%);
+    transition: transform 0.24s ease;
+  }
+  .sidebar.is-open { transform: none; }
+  .sidebar__drawer-head { display: flex; }
+  .sidebar-scrim:not([hidden]) { display: block; }
+
+  /* Vùng chạm rộng hơn trong danh sách */
+  .family-item__main { padding: 11px 12px; }
+  .family-item__name { font-size: 14.5px; }
+  .family-item__more { padding: 11px 12px; font-size: 18px; }
+  .realm-row { padding: 8px 6px; font-size: 14px; }
+  .realm-row__more { padding: 7px 10px; font-size: 16px; }
+  .realm-add-child { padding: 8px 12px; }
+
+  /* ----- Toolbar: bỏ nhóm zoom, chỉ giữ dải chú giải cuộn ngang ----- */
+  .toolbar {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 0;
+    padding: 6px calc(12px + var(--safe-right)) 6px calc(12px + var(--safe-left));
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .toolbar::-webkit-scrollbar { display: none; }
+  .toolbar__group { display: none; }
+  .toolbar__legend { flex-wrap: nowrap; gap: 14px; }
+  .legend-item { white-space: nowrap; }
+
+  /* ----- Nút nổi điều khiển khung nhìn ----- */
+  .canvas__controls { display: flex; }
+
+  /* ----- Nút & form ----- */
+  .btn { padding: 10px 14px; }
+  .btn--sm { padding: 8px 12px; font-size: 12.5px; }
+  .btn--icon { width: var(--tap); height: var(--tap); }
+  /* 16px: dưới ngưỡng này Safari iOS tự phóng to trang khi focus vào ô nhập */
+  .input { font-size: 16px; padding: 10px 12px; }
+  .form-grid { grid-template-columns: 1fr; }
+
+  /* ----- Modal dạng bottom sheet ----- */
+  .modal-backdrop { padding: 0; align-items: flex-end; }
+  .modal,
+  .modal--sm, .modal--md, .modal--lg,
+  .modal--scroll.modal--sm, .modal--scroll.modal--md, .modal--scroll.modal--lg {
+    max-width: none;
+  }
+  .modal,
+  .modal--scroll {
+    width: 100%;
+    max-height: 92dvh;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    border-bottom: none;
+    transform: translateY(24px);
+  }
+  /* Thanh "tay nắm" quen thuộc của bottom sheet */
+  .modal__header::before {
+    content: '';
+    position: absolute;
+    top: 7px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 38px;
+    height: 4px;
+    border-radius: 999px;
+    background: currentColor;
+    opacity: 0.28;
+  }
+  .modal__header {
+    position: relative;
+    padding: 18px 16px 12px;
+  }
+  .modal__body {
+    padding: 16px;
+    gap: 16px;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .modal__footer {
+    padding: 12px 16px calc(12px + var(--safe-bottom));
+  }
+  .modal__close { font-size: 26px; padding: 4px 10px; }
+
+  .modal--scroll .modal__header { padding-top: 22px; }
+  .modal--scroll .modal__footer { padding-bottom: calc(16px + var(--safe-bottom)); }
+
+  /* ----- Popover: mục menu to hơn cho ngón tay ----- */
+  .popover { min-width: 210px; padding: 6px; }
+  .popover__item { padding: 12px; font-size: 14px; }
+
+  /* ----- Toast: bám đáy, nhường chỗ cho cụm nút nổi bên phải ----- */
+  .toast-root {
+    top: auto;
+    left: calc(12px + var(--safe-left));
+    right: calc(20px + var(--safe-right) + var(--tap));
+    /* Nâng cao hơn chân màn hình để không đè lên hàng nút của bottom sheet */
+    bottom: calc(80px + var(--safe-bottom));
+    max-width: none;
+  }
+  .toast { transform: translateY(10px); }
+}
+
+/*
+ * Điện thoại nằm ngang: chiều cao rất eo hẹp - bỏ dải chú giải và thu gọn
+ * topbar để trả lại ~60px cho cây.
+ */
+@media (max-width: 880px) and (max-height: 480px) {
+  .toolbar { display: none; }
+  .topbar {
+    padding-top: calc(4px + var(--safe-top));
+    padding-bottom: 4px;
+  }
+  .topbar__menu,
+  .topbar__actions .btn--dual { width: 38px; height: 38px; }
+  .topbar__logo { font-size: 18px; }
+  .canvas__controls { flex-direction: row-reverse; align-items: center; }
+}
+
+@media (max-width: 520px) {
+  .rel-row { flex-direction: column; gap: 4px; }
+  .rel-row__label { width: auto; padding-top: 0; }
+  .btn-row .btn { flex: 1 1 auto; }
+}
+
+/* Người dùng bật "giảm chuyển động" - bỏ mọi hiệu ứng trượt/đổi hình */
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .modal,
+  .modal-backdrop,
+  .toast,
+  .node { transition: none; }
 }
