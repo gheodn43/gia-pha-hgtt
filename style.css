@@ -699,6 +699,79 @@ button, .btn { touch-action: manipulation; }
 .node__status--alive { color: var(--success); }
 .node__status--deceased { color: var(--text-faint); }
 
+/*
+ * Biến thể thẻ NGANG (body.cards-flat) - bật trên mobile và trên mọi trình
+ * duyệt không dựng được chữ dọc. Chữ chạy ngang bình thường, thẻ rộng - thấp;
+ * kích thước tương ứng nằm ở METRICS.flat trong layout.js.
+ *
+ * Nhãn vai trò và dấu trạng thái được đẩy ra 2 góc trên để phần thân thẻ
+ * dành trọn cho tên - chức danh - cảnh giới.
+ */
+
+.cards-flat .node {
+  align-items: stretch;
+  justify-content: center;
+  padding: 22px 10px 8px;
+}
+
+.cards-flat .node__flag {
+  position: absolute;
+  top: 5px;
+  left: 8px;
+  margin: 0;
+  max-width: calc(100% - 30px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cards-flat .node__status {
+  position: absolute;
+  top: 5px;
+  right: 8px;
+  margin: 0;
+}
+
+.cards-flat .node__body {
+  align-items: stretch;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.cards-flat .node__name,
+.cards-flat .node__title,
+.cards-flat .node__realm {
+  writing-mode: horizontal-tb;
+  text-orientation: mixed;
+  height: auto;
+  width: 100%;
+  letter-spacing: normal;
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+
+.cards-flat .node__name {
+  font-size: 14px;
+  line-height: 1.25;
+  /* Tên dài: xuống tối đa 2 dòng rồi cắt bằng dấu ba chấm */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cards-flat .node__title,
+.cards-flat .node__realm {
+  margin-top: 2px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.cards-flat .node__title { font-size: 10.5px; }
+.cards-flat .node__realm { font-size: 10px; }
+
+.cards-flat .tree-label { height: 22px; padding: 0 8px; }
+.cards-flat .tree-label__text { font-size: 11px; }
+.cards-flat .lane__label { font-size: 11.5px; padding: 5px 8px; }
+
 /* ---------------------------------------------------------------------- *
  * Buttons
  * ---------------------------------------------------------------------- */
@@ -1381,7 +1454,7 @@ body.has-drawer { overflow: hidden; }
 }
 .modal--scroll .modal__footer .btn--danger:first-child { margin-right: auto; }
 
-@media (max-width: 880px) {
+@media (max-width: 880px), (pointer: coarse) {
   .modal--scroll .modal__header { padding: 20px 22px 18px; }
   .modal--scroll .modal__body { padding: 22px; gap: 24px; }
   .modal--scroll .modal__footer { padding: 16px 22px; }
@@ -1407,7 +1480,7 @@ body.has-drawer { overflow: hidden; }
    không tự phóng to trang khi focus.
    ========================================================================== */
 
-@media (max-width: 880px) {
+@media (max-width: 880px), (pointer: coarse) {
   /* ----- Topbar ----- */
   .topbar {
     flex-wrap: nowrap;
@@ -1529,8 +1602,11 @@ body.has-drawer { overflow: hidden; }
   }
   .modal__close { font-size: 26px; padding: 4px 10px; }
 
-  .modal--scroll .modal__header { padding-top: 22px; }
-  .modal--scroll .modal__footer { padding-bottom: calc(16px + var(--safe-bottom)); }
+  /* Skin "thư tịch cổ" có lề rộng hơn - thu lại để lấy thêm bề ngang cho form */
+  .modal--scroll .modal__header { padding: 22px 16px 14px; }
+  .modal--scroll .modal__body { padding: 16px; gap: 20px; }
+  .modal--scroll .modal__footer { padding: 12px 16px calc(12px + var(--safe-bottom)); }
+  .modal--scroll .modal__title { font-size: 21px; }
 
   /* ----- Popover: mục menu to hơn cho ngón tay ----- */
   .popover { min-width: 210px; padding: 6px; }
@@ -1552,7 +1628,8 @@ body.has-drawer { overflow: hidden; }
  * Điện thoại nằm ngang: chiều cao rất eo hẹp - bỏ dải chú giải và thu gọn
  * topbar để trả lại ~60px cho cây.
  */
-@media (max-width: 880px) and (max-height: 480px) {
+@media (max-width: 880px) and (max-height: 480px),
+       (pointer: coarse) and (max-height: 480px) {
   .toolbar { display: none; }
   .topbar {
     padding-top: calc(4px + var(--safe-top));
