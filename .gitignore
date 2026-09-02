@@ -1,2 +1,5 @@
 .idea/
 .DS_Store
+
+# Ảnh chụp màn hình tạm khi kiểm thử
+*.png
