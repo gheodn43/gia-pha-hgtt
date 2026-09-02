@@ -11,8 +11,11 @@
 class TreeView {
   static MIN_SCALE = 0.15;
   static MAX_SCALE = 2.5;
-  /** Tỉ lệ nhỏ nhất mà chữ trên thẻ nhân vật còn đọc được trên điện thoại */
-  static READABLE_SCALE = 0.42;
+  /**
+   * Tỉ lệ nhỏ nhất mà chữ trên thẻ nhân vật còn đọc được trên điện thoại.
+   * Thẻ ngang chữ nhỏ hơn thẻ "bài vị" nên cần sàn cao hơn.
+   */
+  static READABLE_SCALE = { vertical: 0.42, flat: 0.5 };
 
   constructor(store, options) {
     this.store = store;
@@ -38,7 +41,13 @@ class TreeView {
    * Render
    * ------------------------------------------------------------------ */
 
-  render(familyId) {
+  /**
+   * @param {string} familyId
+   * @param {object} [options]
+   * @param {boolean} [options.refit] ép đưa cây về vừa khung nhìn sau khi vẽ
+   */
+  render(familyId, { refit = false } = {}) {
+    const cardModeChanged = TreeView.syncCardMode();
     const isNewFamily = familyId !== this.currentFamilyId;
     this.currentFamilyId = familyId;
     this.layout = Layout.compute(this.store, familyId);
@@ -63,11 +72,12 @@ class TreeView {
 
     /* ----- 1. Dải đời ----- */
     for (const lane of layout.lanes) {
+      const padY = Layout.CONST.LANE_PAD_Y;
       const band = Utils.el('div', {
         class: `lane${lane.generation % 2 === 0 ? ' lane--alt' : ''}`,
         style: {
-          top: `${lane.y - 26}px`,
-          height: `${lane.height + 52}px`,
+          top: `${lane.y - padY}px`,
+          height: `${lane.height + padY * 2}px`,
           width: `${layout.width}px`,
         },
       });
@@ -148,7 +158,7 @@ class TreeView {
       this.nodeLayer.append(this.#renderNode(character, node, NODE_W, NODE_H));
     }
 
-    if (isNewFamily) this.fit({ readableFloor: true });
+    if (isNewFamily || refit || cardModeChanged) this.fit({ readableFloor: true });
     else this.#applyTransform();
   }
 
@@ -401,20 +411,51 @@ class TreeView {
       TreeView.MIN_SCALE,
       1,
     );
-    const floor = readableFloor && TreeView.isCompactViewport() ? TreeView.READABLE_SCALE : 0;
+    const floor = readableFloor && TreeView.isCompactViewport()
+      ? TreeView.READABLE_SCALE[Layout.getCardMode()] || 0
+      : 0;
     const scale = Math.max(exact, floor);
 
     this.transform.scale = scale;
-    this.transform.x = (rect.width - this.layout.width * scale) / 2;
-    this.transform.y = scale > exact
-      ? 16
-      : Math.max(16, (rect.height - this.layout.height * scale) / 2);
+    if (scale > exact) {
+      // Đã chạm sàn đọc được: cây tràn ra ngoài khung nhìn nên căn giữa sẽ cắt
+      // cụt cả hai mép. Neo vào góc trên - trái để nhãn "Đời N" và gốc cây
+      // hiện đầy đủ, người dùng kéo tiếp sang phải.
+      this.transform.x = 16;
+      this.transform.y = 16;
+    } else {
+      this.transform.x = (rect.width - this.layout.width * scale) / 2;
+      this.transform.y = Math.max(16, (rect.height - this.layout.height * scale) / 2);
+    }
     this.#applyTransform();
   }
 
   /** Màn hình hẹp / thiết bị cảm ứng - dùng để chọn hành vi khung nhìn */
   static isCompactViewport() {
     return window.matchMedia('(max-width: 880px), (pointer: coarse)').matches;
+  }
+
+  /**
+   * Chọn kiểu thẻ nhân vật cho môi trường hiện tại và đồng bộ sang Layout +
+   * class trên <body> (CSS dựa vào class này).
+   *
+   * Dùng thẻ ngang khi: màn hình hẹp / thiết bị cảm ứng, HOẶC trình duyệt
+   * không hỗ trợ chữ dọc. Nhiều trình duyệt di động không dựng được
+   * writing-mode dọc nên thẻ "bài vị" hiện ra trống trơn.
+   *
+   * @returns {boolean} true nếu kiểu thẻ vừa đổi (caller cần vẽ lại)
+   */
+  static syncCardMode() {
+    const flat = TreeView.isCompactViewport() || !TreeView.supportsVerticalText();
+    document.body.classList.toggle('cards-flat', flat);
+    return Layout.setCardMode(flat ? 'flat' : 'vertical');
+  }
+
+  static supportsVerticalText() {
+    return typeof CSS !== 'undefined'
+      && typeof CSS.supports === 'function'
+      && CSS.supports('writing-mode', 'vertical-rl')
+      && CSS.supports('text-orientation', 'upright');
   }
 
   /** Đưa một nhân vật vào giữa khung nhìn và làm nổi bật */

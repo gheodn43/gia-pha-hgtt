@@ -53,15 +53,18 @@
 
     // Trên di động, thanh địa chỉ ẩn/hiện và bàn phím ảo bật lên đều bắn sự
     // kiện resize - fit lại mỗi lần như vậy sẽ ném đi khung nhìn người dùng
-    // vừa kéo/zoom. Chỉ fit lại khi bề rộng thực sự đổi (xoay máy, resize cửa
-    // sổ desktop), và có debounce.
+    // vừa kéo/zoom. Chỉ xử lý khi bề rộng thực sự đổi (xoay máy, resize cửa
+    // sổ desktop), và có debounce. Vẽ lại chứ không chỉ fit, vì khi vượt qua
+    // ngưỡng 880px thì kiểu thẻ nhân vật (dọc / ngang) cũng đổi theo.
     let lastWidth = window.innerWidth;
     let resizeTimer = null;
     window.addEventListener('resize', () => {
       if (window.innerWidth === lastWidth) return;
       lastWidth = window.innerWidth;
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => app.tree.fit({ readableFloor: true }), 150);
+      resizeTimer = setTimeout(() => {
+        app.tree.render(app.store.activeFamilyId, { refit: true });
+      }, 150);
     });
   });
 

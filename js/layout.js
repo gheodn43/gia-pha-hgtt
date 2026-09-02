@@ -16,20 +16,71 @@
  *      + nếu con chỉ có 1 cha/mẹ trong cụm  -> neo ngay dưới người đó
  */
 const Layout = (() => {
-  const CONST = {
-    NODE_W: 108, // thẻ dọc hẹp (kiểu bài vị) - chữ xếp dọc để tiết kiệm chiều ngang
-    NODE_H: 335, // cao hơn để bù cho việc hẹp lại
-    SPOUSE_GAP: 14, // khoảng cách giữa vợ/chồng trong cùng cụm
-    SIB_GAP: 20, // khoảng cách giữa các anh em cùng cha mẹ
-    GROUP_GAP: 40, // khoảng cách giữa các nhóm con khác mẹ
-    ROOT_GAP: 70, // khoảng cách giữa các nhánh gốc rời rạc trong cùng một tree
-    TREE_GAP: 120, // khoảng cách giữa hai cây huyết thống độc lập
-    ROW_H: 475, // khoảng cách giữa 2 đời
-    LANE_LABEL_W: 116, // bề rộng cột nhãn "Đời N"
-    LANE_PAD_X: 28,
-    TREE_LABEL_H: 40, // chiều cao vùng nhãn tên cây phía trên mỗi cụm
-    PAD: 60,
+  /**
+   * Hai bộ kích thước cho thẻ nhân vật:
+   *
+   *  - `vertical` — thẻ "bài vị" hẹp và cao, chữ xếp dọc bằng writing-mode.
+   *  - `flat` — thẻ ngang thông thường, thấp và rộng.
+   *
+   * Bộ `flat` dùng trên mobile vì một số trình duyệt di động không dựng được
+   * `writing-mode: vertical-rl` + `text-orientation: upright` (chữ mất hẳn
+   * hoặc chồng đè lên nhau). Đổi bộ kích thước là bắt buộc chứ không chỉ đổi
+   * CSS: chữ nằm ngang cần thẻ rộng - thấp, kéo theo khoảng cách giữa các
+   * đời và bề rộng cột nhãn cũng phải co lại.
+   */
+  const METRICS = {
+    vertical: {
+      NODE_W: 108, // thẻ dọc hẹp (kiểu bài vị) - chữ xếp dọc để tiết kiệm chiều ngang
+      NODE_H: 335, // cao hơn để bù cho việc hẹp lại
+      SPOUSE_GAP: 14, // khoảng cách giữa vợ/chồng trong cùng cụm
+      SIB_GAP: 20, // khoảng cách giữa các anh em cùng cha mẹ
+      GROUP_GAP: 40, // khoảng cách giữa các nhóm con khác mẹ
+      ROOT_GAP: 70, // khoảng cách giữa các nhánh gốc rời rạc trong cùng một tree
+      TREE_GAP: 120, // khoảng cách giữa hai cây huyết thống độc lập
+      ROW_H: 475, // khoảng cách giữa 2 đời
+      LANE_LABEL_W: 116, // bề rộng cột nhãn "Đời N"
+      LANE_PAD_X: 28,
+      LANE_PAD_Y: 26, // dải nền "Đời N" nhô ra trên/dưới thẻ bao nhiêu
+      TREE_LABEL_H: 40, // chiều cao vùng nhãn tên cây phía trên mỗi cụm
+      PAD: 60,
+    },
+    flat: {
+      NODE_W: 176,
+      NODE_H: 108,
+      SPOUSE_GAP: 12,
+      SIB_GAP: 16,
+      GROUP_GAP: 32,
+      ROOT_GAP: 56,
+      TREE_GAP: 90,
+      ROW_H: 212,
+      LANE_LABEL_W: 88,
+      LANE_PAD_X: 18,
+      LANE_PAD_Y: 16,
+      TREE_LABEL_H: 30,
+      PAD: 36,
+    },
   };
+
+  // Mọi nơi đọc `Layout.CONST.X` tại thời điểm tính toán, nên đổi bộ kích
+  // thước = ghi đè tại chỗ lên chính object này.
+  const CONST = { ...METRICS.vertical };
+  let cardMode = 'vertical';
+
+  /**
+   * Đổi kiểu thẻ. Trả về true nếu thực sự có thay đổi (caller cần vẽ lại).
+   * @param {'vertical'|'flat'} mode
+   */
+  function setCardMode(mode) {
+    const next = METRICS[mode] ? mode : 'vertical';
+    if (next === cardMode) return false;
+    cardMode = next;
+    Object.assign(CONST, METRICS[next]);
+    return true;
+  }
+
+  function getCardMode() {
+    return cardMode;
+  }
 
   /**
    * Dựng "rừng" cụm cho một tập nhân vật thuộc CÙNG MỘT tree: gom vợ/chồng
@@ -346,5 +397,5 @@ const Layout = (() => {
     };
   }
 
-  return { compute, CONST };
+  return { compute, CONST, setCardMode, getCardMode };
 })();
